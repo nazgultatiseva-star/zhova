@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Саналы таңдау – жарқын болашақ | №50 ЖОББМ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; font-size: 12pt; }
+            .card-print { border: none !important; shadow: none !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 no-print shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 text-white p-2.5 rounded-xl shadow-md">
+                    <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold text-blue-600 tracking-wider uppercase">Кәсіптік бағдар беру платформасы</span>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">№50 жалпы орта білім беретін мектеп</h1>
+                </div>
+            </div>
+            <nav class="flex gap-2 bg-slate-100 p-1 rounded-xl text-sm font-medium">
+                <button onclick="switchTab('survey')" id="tab-survey" class="px-4 py-2 rounded-lg transition tab-active flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> Сауалнама
+                </button>
+                <button onclick="switchTab('analytics')" id="tab-analytics" class="px-4 py-2 rounded-lg transition text-slate-600 hover:text-slate-900 flex items-center gap-2">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Мектеп аналитикасы
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- SECTION 1: SURVEY FORM -->
+        <section id="survey-section" class="space-y-6">
+            <!-- Hero Card -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium inline-block mb-3">№50 ЖОББМ «Саналы таңдау – жарқын болашақ»</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Болашақ мамандығыңды таңда!</h2>
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+                        Сүйікті салаңды таңдап, мамандықтар каталогымен таныс. Бұл сауалнама мектебімізге сенің қызығушылығыңа сай кездесулер мен тренингтер ұйымдастыруға көмектеседі.
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10">
+                    <i data-lucide="compass" class="w-64 h-64"></i>
+                </div>
+            </div>
+
+            <!-- Main Form Card -->
+            <form id="vocational-form" onsubmit="handleFormSubmit(event)" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-8">
+                
+                <!-- Student Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6 border-b border-slate-100">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Оқушының аты-жөні</label>
+                        <input type="text" id="student-name" required placeholder="Мысалы: Арман Қайратов" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Сыныбы</label>
+                        <select id="student-grade" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-medium">
+                            <option value="">Сыныпты таңдаңыз</option>
+                            <option value="9-А">9 «А»</option>
+                            <option value="9-Ә">9 «Ә»</option>
+                            <option value="9-Б">9 «Б»</option>
+                            <option value="10-А">10 «А»</option>
+                            <option value="10-Ә">10 «Ә»</option>
+                            <option value="10-Б">10 «Б»</option>
+                            <option value="11-А">11 «А»</option>
+                            <option value="11-Ә">11 «Ә»</option>
+                            <option value="11-Б">11 «Б»</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 1. TWO-STAGE PROFESSION SELECTION -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm">1</span>
+                        <h3 class="font-bold text-slate-900 text-lg">Мамандық бағыты мен нақты мамандықты таңдау</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 pl-10">Екі деңгейлі таңдау жүйесі: алдымен саланы белгілеңіз, содан соң ішкі мамандықтар ашылады.</p>
+
+                    <!-- Main Profession -->
+                    <div class="pl-0 sm:pl-10 space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <label class="block font-semibold text-sm text-slate-800 mb-2">Негізгі таңдайтын мамандығыңыз:</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs text-slate-500 mb-1">1-қадам: Саланы таңдаңыз</label>
+                                    <select id="main-category" required onchange="updateProfessionDropdown('main')" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-blue-500">
+                                        <option value="">-- Саланы таңдаңыз --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-slate-500 mb-1">2-қадам: Нақты мамандықты белгілеңіз</label>
+                                    <select id="main-profession" required disabled class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100">
+                                        <option value="">-- Алдымен саланы таңдаңыз --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Profession 1 -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <label class="block font-semibold text-sm text-slate-800 mb-2">Қосымша қызығатын мамандық #1:</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <select id="sub1-category" onchange="updateProfessionDropdown('sub1')" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-blue-500">
+                                        <option value="">-- Саланы таңдаңыз --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="sub1-profession" disabled class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100">
+                                        <option value="">-- Алдымен саланы таңдаңыз --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Profession 2 -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <label class="block font-semibold text-sm text-slate-800 mb-2">Қосымша қызығатын мамандық #2:</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <select id="sub2-category" onchange="updateProfessionDropdown('sub2')" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-blue-500">
+                                        <option value="">-- Саланы таңдаңыз --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select id="sub2-profession" disabled class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100">
+                                        <option value="">-- Алдымен саланы таңдаңыз --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. REASONS FOR SELECTION -->
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm">2</span>
+                        <h3 class="font-bold text-slate-900 text-lg">Бұл мамандықты не үшін таңдадыңыз?</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 pl-10">Бірнеше жауап нұсқасын таңдауға болады:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-0 sm:pl-10" id="reasons-container">
+                        <!-- Dynamic checkboxes -->
+                    </div>
+                </div>
+
+                <!-- 3. KNOWLEDGE LEVEL -->
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm">3</span>
+                        <h3 class="font-bold text-slate-900 text-lg">Таңдаған мамандығыңыз туралы қаншалықты білесіз?</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-0 sm:pl-10" id="knowledge-container">
+                        <!-- Dynamic radios -->
+                    </div>
+                </div>
+
+                <!-- 4. INFORMATION NEEDED -->
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm">4</span>
+                        <h3 class="font-bold text-slate-900 text-lg">Осы мамандық туралы қандай ақпарат алғыңыз келеді?</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-0 sm:pl-10" id="info-container">
+                        <!-- Dynamic checkboxes -->
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-6 flex justify-end">
+                    <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2 text-base">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i> Жауаптарды көшіру & Нәтижені көру
+                    </button>
+                </div>
+            </form>
+
+            <!-- RESULT DISPLAY / SUMMARY CARD (Appears after submit) -->
+            <div id="result-card" class="hidden bg-white rounded-2xl border border-slate-200 shadow-md p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-600 tracking-wider uppercase">Сауалнама толтырылды</span>
+                        <h3 class="text-xl font-bold text-slate-900" id="res-student-title">Оқушының Таңдау Картасы</h3>
+                        <p class="text-xs text-slate-500">№50 жалпы орта білім беретін мектеп</p>
+                    </div>
+                    <div class="flex gap-2 no-print">
+                        <button onclick="copyAnswersToClipboard()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i> Текстті көшіру
+                        </button>
+                        <button onclick="window.print()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-md">
+                            <i data-lucide="printer" class="w-4 h-4"></i> PDF / Басып шығару
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Printed Summary View -->
+                <div class="space-y-4 text-sm" id="result-content-body">
+                    <!-- Dynamic details injection -->
+                </div>
+
+                <!-- Notice Note -->
+                <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs leading-relaxed no-print flex gap-3">
+                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-amber-600"></i>
+                    <span><strong>Ескерту:</strong> Бұл — веб-қосымшаның қалай жұмыс істейтінін көрсететін үлгі. Жоғарыдағы «Текстті көшіру» немесе «PDF / Басып шығару» түймесі арқылы нәтижеңізді мектеп психологына немесе сынып жетекшісіне жібере аласыз.</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: SCHOOL ANALYTICAL DASHBOARD -->
+        <section id="analytics-section" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-semibold text-blue-600 tracking-wider uppercase">№50 ЖОББМ Әкімшілік панелі</span>
+                        <h2 class="text-2xl font-bold text-slate-900">«Саналы таңдау» Мониторингі</h2>
+                        <p class="text-xs text-slate-500 mt-1">10-сыныптар бойынша мамандық таңдау статистикасы (Мысал деректер базасы)</p>
+                    </div>
+                    <div class="bg-blue-50 text-blue-700 text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4"></i> Барлығы: 60 Оқушы
+                    </div>
+                </div>
+
+                <!-- Analytics Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart 1: Categories -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col items-center">
+                        <h4 class="font-bold text-slate-800 text-sm mb-4 self-start">Бағыттар бойынша оқушылар үлесі</h4>
+                        <div class="w-full max-w-xs">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Knowledge level -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col items-center">
+                        <h4 class="font-bold text-slate-800 text-sm mb-4 self-start">Мамандық туралы хабардарлық деңгейі</h4>
+                        <div class="w-full max-w-xs">
+                            <canvas id="knowledgeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executive Recommendations -->
+                <div class="pt-4 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500"></i> Мектеп әкімшілігі мен психологына арналған ұсыныстар:
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-1">
+                            <div class="font-bold text-blue-900 text-sm flex items-center gap-1.5">
+                                <i data-lucide="stethoscope" class="w-4 h-4 text-blue-600"></i> 15 Оқушы (25%)
+                            </div>
+                            <div class="text-xs font-semibold text-slate-700">Медицина бағыты</div>
+                            <p class="text-xs text-slate-600 pt-1">Мектепке дәрігерлерді, хирургтарды және медициналық Академия оқытушыларын шақырып, кездесу ұйымдастыру.</p>
+                        </div>
+
+                        <div class="p-4 bg-emerald-50 border border-emerald-100 rounded-xl space-y-1">
+                            <div class="font-bold text-emerald-900 text-sm flex items-center gap-1.5">
+                                <i data-lucide="code" class="w-4 h-4 text-emerald-600"></i> 12 Оқушы (20%)
+                            </div>
+                            <div class="text-xs font-semibold text-slate-700">IT және ЖИ бағыты</div>
+                            <p class="text-xs text-slate-600 pt-1">Бағдарламашылар, IT компания мамандарымен және киберқауіпсіздік сарапшыларымен шеберлік сыныбын өткізу.</p>
+                        </div>
+
+                        <div class="p-4 bg-amber-50 border border-amber-100 rounded-xl space-y-1">
+                            <div class="font-bold text-amber-900 text-sm flex items-center gap-1.5">
+                                <i data-lucide="shield" class="w-4 h-4 text-amber-600"></i> 10 Оқушы (16.6%)
+                            </div>
+                            <div class="text-xs font-semibold text-slate-700">Құқық қорғау саласы</div>
+                            <p class="text-xs text-slate-600 pt-1">Полиция қызметкерлері, тергеуші, адвокат немесе прокуратура мамандарымен кездесу жоспарлау.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 no-print mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-500">
+            © №50 жалпы орта білім беретін мектеп | Кәсіптік бағдар беру және психологилық қолдау қызметі
+        </div>
+    </footer>
+
+    <!-- JavaScript Data and Logic -->
+    <script>
+        // Data Structure for 12 Categories and Professions
+        const catalogData = [
+            {
+                category: "Медицина және денсаулық сақтау",
+                professions: ["Хирург", "Терапевт", "Педиатр", "Кардиолог", "Невролог", "Стоматолог", "Офтальмолог", "Гинеколог", "Анестезиолог-реаниматолог", "Дерматолог", "Психиатр", "Дәріханашы (фармацевт)", "Медбике / мейіргер", "Фельдшер", "Медициналық зертхана маманы", "Ветеринар дәрігер"]
+            },
+            {
+                category: "Құқық қорғау және заң саласы",
+                professions: ["Полиция қызметкері", "Тергеуші", "Криминалист", "Прокурор", "Адвокат", "Судья", "Нотариус", "Заңгер", "Сот сарапшысы", "Қылмыстық-атқару жүйесінің қызметкері", "Сыбайлас жемқорлыққа қарсы қызмет маманы", "Кеден қызметкері"]
+            },
+            {
+                category: "IT және жасанды интеллект",
+                professions: ["Бағдарламашы", "Веб-сайт әзірлеуші", "Мобильді қосымша әзірлеуші", "Жасанды интеллект маманы", "Робототехника инженері", "Киберқауіпсіздік маманы", "Деректер талдаушысы", "Ойын әзірлеуші", "Компьютерлік желі маманы", "UX/UI дизайнері"]
+            },
+            {
+                category: "Білім беру және ғылым",
+                professions: ["Бастауыш сынып мұғалімі", "Қазақ тілі мен әдебиеті мұғалімі", "Математика мұғалімі", "Физика мұғалімі", "Информатика мұғалімі", "Биология немесе химия мұғалімі", "Тарих немесе география мұғалімі", "Психолог", "Логопед", "Дефектолог", "Ғылыми зерттеуші", "Университет оқытушысы"]
+            },
+            {
+                category: "Инженерия, құрылыс және өндіріс",
+                professions: ["Құрылыс инженері", "Сәулетші (архитектор)", "Электр инженері", "Мұнай-газ инженері", "Механик-инженер", "Автоматтандыру инженері", "Энергетик", "Геолог", "Геодезист", "Тау-кен инженері", "Материалтанушы", "Еңбекті қорғау маманы"]
+            },
+            {
+                category: "Қаржы, экономика және бизнес",
+                professions: ["Бухгалтер", "Экономист", "Қаржы талдаушысы", "Банк маманы", "Аудитор", "Салық маманы", "Кәсіпкер", "Маркетолог", "HR маманы", "Жоба менеджері", "Логистика маманы", "Кәсіпкерлік кеңесші"]
+            },
+            {
+                category: "Шығармашылық, медиа және дизайн",
+                professions: ["Журналист", "Тележүргізуші", "Режиссер", "Оператор", "Фотограф", "Графикалық дизайнер", "Суретші", "Аниматор", "Актер", "Музыкант", "Әнші", "Сән дизайнері", "Контент жасаушы"]
+            },
+            {
+                category: "Ауыл шаруашылығы және экология",
+                professions: ["Агроном", "Ветеринар", "Зоотехник", "Эколог", "Биолог", "Орман шаруашылығы маманы", "Су ресурстары маманы", "Топырақтанушы", "Ауыл шаруашылығы инженері", "Балық шаруашылығы маманы"]
+            },
+            {
+                category: "Көлік, авиация және логистика",
+                professions: ["Ұшқыш", "Әуе қозғалысын басқарушы", "Әуе кемесіне қызмет көрсету инженері", "Пойыз машинисі", "Автомеханик", "Автокөлік инженері", "Теңізші", "Логист", "Жол инженері", "Көлік диспетчері"]
+            },
+            {
+                category: "Қауіпсіздік, қорғаныс және төтенше жағдайлар",
+                professions: ["Әскери қызметкер", "Шекара қызметінің маманы", "Ұлттық қауіпсіздік саласының маманы", "Құтқарушы", "Өрт сөндіруші", "Азаматтық қорғау маманы", "Азаматтық авиация қауіпсіздігі маманы"]
+            },
+            {
+                category: "Қызмет көрсету және туризм",
+                professions: ["Аспаз", "Кондитер", "Қонақүй әкімшісі", "Туризм менеджері", "Гид-экскурсия жетекшісі", "Мейрамхана менеджері", "Шаштараз", "Косметолог", "Киім тігу маманы", "Электрик", "Дәнекерлеуші", "Автокөлік жөндеу шебері"]
+            },
+            {
+                category: "Мемлекеттік қызмет және әлеуметтік сала",
+                professions: ["Мемлекеттік қызметші", "Дипломат", "Әлеуметтік қызметкер", "Қоғаммен байланыс маманы", "Кітапханашы", "Мұрағатшы", "Тарихшы", "Мәдениет мекемесінің қызметкері"]
+            }
+        ];
+
+        const reasonsList = [
+            "Қызығушылығым бар",
+            "Қабілетіме сәйкес келеді",
+            "Қоғамға көмектескім келеді",
+            "Табысы жақсы деп ойлаймын",
+            "Отбасым ұсынады",
+            "Бұл мамандықта жұмыс мүмкіндігі көп",
+            "Әлі білмеймін"
+        ];
+
+        const knowledgeList = [
+            "Жақсы білемін",
+            "Аздап білемін",
+            "Ақпаратым аз",
+            "Мүлде білмеймін"
+        ];
+
+        const infoList = [
+            "Қайда оқуға болады?",
+            "Қанша жыл оқу керек?",
+            "Күнделікті жұмысы қандай?",
+            "Жалақысы мен мансаптық мүмкіндігі қандай?",
+            "Қандай пәндерді жақсы білу керек?",
+            "Қандай қабілеттер қажет?",
+            "Жұмысқа орналасу мүмкіндігі қандай?"
+        ];
+
+        // Global Form Submission Data
+        let lastSubmissionText = "";
+
+        // Initialization
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            populateCategories();
+            populateFormOptions();
+            initCharts();
+        });
+
+        // Tab Switching Logic
+        function switchTab(tab) {
+            const surveySec = document.getElementById('survey-section');
+            const analyticsSec = document.getElementById('analytics-section');
+            const tabSurveyBtn = document.getElementById('tab-survey');
+            const tabAnalyticsBtn = document.getElementById('tab-analytics');
+
+            if (tab === 'survey') {
+                surveySec.classList.remove('hidden');
+                analyticsSec.classList.add('hidden');
+                tabSurveyBtn.className = "px-4 py-2 rounded-lg transition tab-active flex items-center gap-2";
+                tabAnalyticsBtn.className = "px-4 py-2 rounded-lg transition text-slate-600 hover:text-slate-900 flex items-center gap-2";
+            } else {
+                surveySec.classList.add('hidden');
+                analyticsSec.classList.remove('hidden');
+                tabAnalyticsBtn.className = "px-4 py-2 rounded-lg transition tab-active flex items-center gap-2";
+                tabSurveyBtn.className = "px-4 py-2 rounded-lg transition text-slate-600 hover:text-slate-900 flex items-center gap-2";
+            }
+        }
+
+        // Populate Category Dropdowns
+        function populateCategories() {
+            const dropdowns = ['main-category', 'sub1-category', 'sub2-category'];
+            dropdowns.forEach(id => {
+                const select = document.getElementById(id);
+                catalogData.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item.category;
+                    opt.textContent = item.category;
+                    select.appendChild(opt);
+                });
+            });
+        }
+
+        // Update Profession Dropdown based on Category selection
+        function updateProfessionDropdown(prefix) {
+            const catSelect = document.getElementById(`${prefix}-category`);
+            const profSelect = document.getElementById(`${prefix}-profession`);
+            const selectedCat = catSelect.value;
+
+            profSelect.innerHTML = '';
+
+            if (!selectedCat) {
+                profSelect.disabled = true;
+                const opt = document.createElement('option');
+                opt.value = "";
+                opt.textContent = "-- Алдымен саланы таңдаңыз --";
+                profSelect.appendChild(opt);
+                return;
+            }
+
+            const catObj = catalogData.find(c => c.category === selectedCat);
+            if (catObj) {
+                profSelect.disabled = false;
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = "";
+                defaultOpt.textContent = "-- Мамандықты таңдаңыз --";
+                profSelect.appendChild(defaultOpt);
+
+                catObj.professions.forEach(prof => {
+                    const opt = document.createElement('option');
+                    opt.value = prof;
+                    opt.textContent = prof;
+                    profSelect.appendChild(opt);
+                });
+            }
+        }
+
+        // Populate Dynamic Checkboxes & Radios
+        function populateFormOptions() {
+            // Reasons (Checkboxes)
+            const reasonsContainer = document.getElementById('reasons-container');
+            reasonsList.forEach((reason, idx) => {
+                reasonsContainer.innerHTML += `
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                        <input type="checkbox" name="reasons" value="${reason}" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                        <span class="text-slate-700">${reason}</span>
+                    </label>
+                `;
+            });
+
+            // Knowledge Level (Radios)
+            const knowledgeContainer = document.getElementById('knowledge-container');
+            knowledgeList.forEach((level, idx) => {
+                knowledgeContainer.innerHTML += `
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                        <input type="radio" name="knowledge" value="${level}" ${idx === 0 ? 'required' : ''} class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                        <span class="text-slate-700">${level}</span>
+                    </label>
+                `;
+            });
+
+            // Information Needed (Checkboxes)
+            const infoContainer = document.getElementById('info-container');
+            infoList.forEach((info, idx) => {
+                infoContainer.innerHTML += `
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                        <input type="checkbox" name="info" value="${info}" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                        <span class="text-slate-700">${info}</span>
+                    </label>
+                `;
+            });
+        }
+
+        // Handle Form Submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('student-name').value;
+            const grade = document.getElementById('student-grade').value;
+            const mainCat = document.getElementById('main-category').value;
+            const mainProf = document.getElementById('main-profession').value;
+            const sub1Prof = document.getElementById('sub1-profession').value || "Көрсетілмеген";
+            const sub2Prof = document.getElementById('sub2-profession').value || "Көрсетілмеген";
+
+            // Selected Reasons
+            const selectedReasons = Array.from(document.querySelectorAll('input[name="reasons"]:checked')).map(cb => cb.value);
+            // Selected Knowledge Level
+            const selectedKnowledge = document.querySelector('input[name="knowledge"]:checked')?.value || "Белгісіз";
+            // Selected Information Needed
+            const selectedInfo = Array.from(document.querySelectorAll('input[name="info"]:checked')).map(cb => cb.value);
+
+            // Construct Copyable Text
+            lastSubmissionText = `«Саналы таңдау – жарқын болашақ» Сауалнама Жауаптары
+Мектеп: №50 жалпы орта білім беретін мектеп
+Оқушы: ${name} (${grade}-сынып)
+
+1. Болашақта қай мамандық иесі болғың келеді?
+   - Негізгі таңдау: ${mainCat} -> ${mainProf}
+   - Қосымша таңдау #1: ${sub1Prof}
+   - Қосымша таңдау #2: ${sub2Prof}
+
+2. Бұл мамандықты не үшін таңдадың?
+   ${selectedReasons.length > 0 ? selectedReasons.map(r => '   • ' + r).join('\n') : '   • Белгіленбеген'}
+
+3. Таңдаған мамандығың туралы қаншалықты білесің?
+   - ${selectedKnowledge}
+
+4. Осы мамандық туралы қандай ақпарат алғың келеді?
+   ${selectedInfo.length > 0 ? selectedInfo.map(i => '   • ' + i).join('\n') : '   • Белгіленбеген'}`;
+
+            // Render Result Card HTML
+            const resBody = document.getElementById('result-content-body');
+            resBody.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div><span class="text-slate-500 text-xs">Оқушы:</span> <p class="font-bold text-slate-800">${name}</p></div>
+                    <div><span class="text-slate-500 text-xs">Сыныбы:</span> <p class="font-bold text-slate-800">${grade}</p></div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-900 border-b pb-1">1. Таңдалған мамандықтар:</h4>
+                    <p><strong>Негізгі:</strong> <span class="bg-blue-100 text-blue-800 font-semibold px-2 py-0.5 rounded">${mainCat} — ${mainProf}</span></p>
+                    <p><strong>Қосымша #1:</strong> ${sub1Prof}</p>
+                    <p><strong>Қосымша #2:</strong> ${sub2Prof}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-900 border-b pb-1">2. Таңдау себебі:</h4>
+                    <ul class="list-disc list-inside text-slate-700 pl-2">
+                        ${selectedReasons.map(r => `<li>${r}</li>`).join('') || '<li>Белгіленбеген</li>'}
+                    </ul>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-900 border-b pb-1">3. Ақпарат деңгейі:</h4>
+                    <span class="inline-block bg-slate-100 border border-slate-300 font-medium px-3 py-1 rounded-lg text-slate-800">${selectedKnowledge}</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-900 border-b pb-1">4. Білгісі келетін ақпараттар:</h4>
+                    <ul class="list-disc list-inside text-slate-700 pl-2">
+                        ${selectedInfo.map(i => `<li>${i}</li>`).join('') || '<li>Белгіленбеген</li>'}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('res-student-title').textContent = `${name} (${grade}) — Таңдау Картасы`;
+            
+            // Show result card and scroll to it
+            const resCard = document.getElementById('result-card');
+            resCard.classList.remove('hidden');
+            resCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Copy Text Functionality
+        function copyAnswersToClipboard() {
+            if (!lastSubmissionText) return;
+            navigator.clipboard.writeText(lastSubmissionText).then(() => {
+                alert("Жауаптар клипбордқа сәтті көшірілді!");
+            }).catch(err => {
+                alert("Көшіру мүмкін болмады.");
+            });
+        }
+
+        // Chart.js Initialization for Analytics
+        function initCharts() {
+            // Category Chart
+            const ctx1 = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Медицина', 'IT және ЖИ', 'Құқық және Заң', 'Инженерия', 'Қаржы/Бизнес', 'Басқалар'],
+                    datasets: [{
+                        data: [15, 12, 10, 8, 7, 8],
+                        backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#94a3b8']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Knowledge Chart
+            const ctx2 = document.getElementById('knowledgeChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: ['Жақсы білемін', 'Аздап білемін', 'Ақпаратым аз', 'Мүлде білмеймін'],
+                    datasets: [{
+                        data: [18, 24, 12, 6],
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
